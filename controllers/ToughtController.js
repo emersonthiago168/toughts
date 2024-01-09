@@ -24,7 +24,7 @@ module.exports = class ToughtsController {
 
         let emptyToughts = false;
 
-        if(toughts.length === 0) emptyToughts = true;
+        if (toughts.length === 0) emptyToughts = true;
 
         res.render('toughts/dashboard', { toughts, emptyToughts });
     }
@@ -59,7 +59,7 @@ module.exports = class ToughtsController {
 
         try {
             await Tought.destroy({ where: { id: id, UserId: UserId } });
-            
+
             req.flash('message', '');
             req.flash('message', 'Pensamento removido com sucesso!');
             req.session.save(() => {
@@ -69,5 +69,13 @@ module.exports = class ToughtsController {
         } catch (err) {
             console.log(err);
         }
+    }
+
+    static async updateTought(req, res) {
+        const id = req.params.id;
+
+        const tought = await Tought.findOne({ raw: true, where: { id: id } });
+
+        res.render('toughts/edit', { tought });
     }
 }
