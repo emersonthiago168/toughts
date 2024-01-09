@@ -39,7 +39,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         store: new FileStore({
-            logFn: function() {},
+            logFn: function () { },
             path: require('path').join(require('os').tmpdir(), 'sessions')
         }),
         cookie: {
@@ -70,6 +70,7 @@ app.use('/', authRouter);
 app.get('/', ToughtController.showToughts);
 
 conn
+    // .sync({ force: true })
     .sync()
     .then(() => {
         app.listen(3000, () => console.log('Conectado na porta 3000'));
