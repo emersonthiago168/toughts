@@ -13,6 +13,7 @@ module.exports = class AuthController {
         const user = await User.findOne({ where: { email: email } });
 
         if(!user) {
+            req.flash('message', '');
             req.flash('message', 'Usuário não encontrado!');
             res.render('auth/login');
 
@@ -23,6 +24,7 @@ module.exports = class AuthController {
         const passwordMatch = bcrypt.compareSync(password, user.password);
 
         if(!passwordMatch) {
+            req.flash('message', '');
             req.flash('message', 'Senha inválida!');
             res.render('auth/login')
 
@@ -31,6 +33,7 @@ module.exports = class AuthController {
 
         // initialize session
         req.session.userid = user.id;
+        req.flash('message', '');
         req.flash('message', 'Autenticação realizada com sucesso!');
 
         req.session.save(() => {
@@ -47,6 +50,7 @@ module.exports = class AuthController {
 
         // password match validation
         if (password !== confirmpassword) {
+            req.flash('message', '');
             req.flash('message', 'As senhas não conferem, tente novamente!');
             res.render('auth/register');
             return;
@@ -56,6 +60,7 @@ module.exports = class AuthController {
         const checkIfUserExists = await User.findOne({ where: { email: email } });
 
         if (checkIfUserExists) {
+            req.flash('message', '');
             req.flash('message', 'O e-mail já está em uso!');
             res.render('auth/register');
 
@@ -78,6 +83,7 @@ module.exports = class AuthController {
             // initialize session
             req.session.userid = createdUser.id;
 
+            req.flash('message', '');
             req.flash('message', 'Cadastro realizado com sucesso!');
 
             req.session.save(() => {
